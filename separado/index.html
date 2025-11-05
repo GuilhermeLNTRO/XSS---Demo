@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo XSS com jQuery (.html vs .text)</title>
+    <!-- 1. Carregar o Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. Carregar o JQUERY (Necessário para este demo) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- 3. Carregar o nosso CSS externo -->
+    <link rel="stylesheet" href="style-jquery.css">
+</head>
+<body>
+
+    <div class="card">
+        <div class="header">
+            <h1 class="text-2xl font-bold">Demo XSS com jQuery</h1>
+            <p class="text-sm opacity-90">Ataque clássico via <code>.html()</code></p>
+        </div>
+        
+        <div class="content">
+            
+            <!-- Formulário para adicionar mensagens -->
+            <form id="comment-form" class="mb-6">
+                <label for="comment-input" class="block mb-2 font-semibold">Deixe uma mensagem no mural:</label>
+                <textarea id="comment-input" class="w-full" rows="3" placeholder="Tente o payload aqui..."></textarea>
+                <div class="button-group">
+                    <button type="submit" id="submit-button">Publicar</button>
+                    <button type="button" id="clear-button">Limpar Mural</button>
+                </div>
+            </form>
+
+            <div class="instructions p-4 bg-gray-100 rounded-lg mb-6">
+                 <p class="text-sm">
+                    Use este *payload* no campo de mensagem e clique em "Publicar":
+                </p>
+                <code class="block w-full text-left p-2 my-2 overflow-x-auto">
+                    &lt;img src=x onerror=alert('XSS via JQUERY!')&gt;
+                </code>
+            </div>
+
+            <!-- Divisão da visualização -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- 4. Secção Vulnerável -->
+                <div class="section vulnerable">
+                    <h2 class="text-xl font-semibold text-red-700 mb-2">💣 VULNERÁVEL (jQuery <code>.html()</code>)</h2>
+                    <div id="vulnerable-list" class="comment-list">
+                        <!-- Mensagens serão injetadas aqui -->
+                    </div>
+                </div>
+
+                <!-- 5. Secção Segura -->
+                <div class="section safe">
+                    <h2 class="text-xl font-semibold text-green-700 mb-2">✅ SEGURO (jQuery <code>.text()</code>)</h2>
+                    <div id="safe-list" class="comment-list">
+                        <!-- Mensagens serão inseridas aqui -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. O Script (agora externo) -->
+    <script src="script-jquery.js"></script>
+
+</body>
+</html>
